@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <property name="APP_Name" value="thread-cases"/>
+  <contextName>${APP_Name}</contextName>
+
+  <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="com.zyl.cases.log.MyPatternLayout">
+      <pattern>
+        %date %-5level %X{ip} ${APP_Name} %msg%n%ex{full, DISPLAY_EX_EVAL}
+      </pattern>
+    </layout>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
+  </appender>
+
+  <!--  error 日志输出 RollingFileAppender(每天滚动输出日志) -->
+  <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>ERROR</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <layout class="com.zyl.cases.log.MyPatternLayout">
+      <pattern>%date %-5level %X{ip} ${APP_Name} %logger{35} - %message%n</pattern>
+    </layout>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${catalina.base}/logs/${APP_Name}/log/error.%d.log</fileNamePattern>
+    </rollingPolicy>
+  </appender>
+
+
+  <!-- info 日志输出  RollingFileAppender(每天滚动输出日志) -->
+  <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>DENY</onMatch>
+      <onMismatch>ACCEPT</onMismatch>
+    </filter>
+    <encoder>
+      <pattern>
+        %d - %msg%n
+      </pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${catalina.base}/logs/${APP_Name}/log/info.%d{yyyy-MM-dd-HH,UTC+8}.log
+      </fileNamePattern>
+    </rollingPolicy>
+  </appender>
+
+  <!-- info 日志输出  RollingFileAppender(每天滚动输出日志) -->
+  <appender name="fileReportInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <layout class="com.zyl.cases.log.MyPatternLayout">
+      <pattern>
+        %date %-5level ${APP_Name} %X{ip} %msg%n%ex{full, DISPLAY_EX_EVAL}
+      </pattern>
+    </layout>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>
+        ${catalina.base}/logs/${APP_Name}/log/reportInfo.%d{yyyy-MM-dd-HH,UTC+8}.log
+      </fileNamePattern>
+    </rollingPolicy>
+  </appender>
+
+ <!-- <logger name="com.seczone.platform.business.chart.service.ChartServiceImpl" additivity="false">
+    <appender-ref ref="fileReportInfoLog"/>
+  </logger>
+
+  <logger name="com.seczone.platform.business.project.service.BugServiceImpl" additivity="false">
+    <appender-ref ref="fileReportInfoLog"/>
+  </logger>-->
+
+  <root level="DEBUG">
+   <!-- <appender-ref ref="consoleLog"/>-->
+    <appender-ref ref="fileInfoLog"/>
+    <appender-ref ref="fileErrorLog"/>
+  </root>
+
+</configuration>

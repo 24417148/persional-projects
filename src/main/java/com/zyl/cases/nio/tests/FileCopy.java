@@ -1,11 +1,11 @@
-package com.zyl.cases.nios;
+package com.zyl.cases.nio.tests;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class Demo {
+public class FileCopy {
 
   private static final String READ_FILE_NAME = "C:/Users/zheng-yl/Desktop/test-read.txt";
 
